@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Johnny Needs a Date</title>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    <style type="text/css">
+      /* Example CSS in your index.html */
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        width: 100%;
+      }
+
+      /* Start of CANVAS ROTATION CSS */
+      /* Rotate the canvas to landscape mode */
+      /* VERY VERY IMPORTANT!!!!! */
+      canvas {
+        transform: rotate(-90deg); /* Rotates the canvas */
+        transform-origin: left top; /* Sets the rotation pivot */
+        width: 100vh; /* Adjust dimensions for rotation */
+        height: 100vw; /* Adjust dimensions for rotation */
+        position: absolute; /* Positions the canvas */
+        top: 100%; /* Moves the canvas down */
+        left: 0; /* Aligns the canvas to the left */
+        margin: 0 !important; /* Removes default margin */
+      }
+      /* VERY VERY IMPORTANT!!!!! */
+      /* End of CANVAS ROTATION CSS */
+    </style>
+  </head>
+  <body>
+    <script type="text/javascript">
+      var config = {
+        type: Phaser.AUTO, // Phaser will use WebGL if available, otherwise it will default to Canvas
+        width: window.innerWidth, // full width
+        height: window.innerHeight, // full height
+        physics: {
+          default: "arcade",
+          arcade: {
+            debug: false,
+          },
+        },
+        scene: {
+          preload: preload,
+          create: create,
+          update: update,
+        },
+      };
+
+      var player;
+      var cursors;
+      var game = new Phaser.Game(config); // create a new Phaser Game
+
+      function preload() {
+        this.load.image("background", "assets/background.jpg");
+        this.load.image("femmeStanding", "assets/femme.png");
+        this.load.spritesheet("femme", "assets/johnny_walks.png", {
+          frameWidth: 247, // width of each frame
+          frameHeight: 352, // height of each frame
+        });
+        this.load.spritesheet("johnny", "assets/johnny_walks.png", {
+          frameWidth: 247, // width of each frame
+          frameHeight: 352, // height of each frame
+        });
+      }
+
+      function create() {
+        /* Start of loading the background and covering it fully */
+        const cam = this.cameras.main; // main camera of the scene
+        const bg = this.add.image(cam.centerX, cam.centerY, "background"); // add background image
+        bg.setDisplaySize(cam.width, cam.height); // apply scale and center
+        /* End of loading the background and covering it fully */
+
+        /* Start of Femme's image */
+        const femmeStanding = this.add.image(800, 1000, "femmeStanding"); // Add Femme image at x=800, y=1000
+        femmeStanding.setDisplaySize(140, 780); // Explicitly set width and height (pixels)
+        /* End of Femme's image */
+
+        /* Start of Femme's idle animation */
+        this.anims.create({
+          // define idle animation
+          key: "femme-idle",
+          frames: this.anims.generateFrameNumbers("femme", {
+            start: 0, // frames start from 0th index.
+            end: 8,
+          }),
+          frameRate: 1,
+          repeat: -1,
+        });
+
+        const femme = this.add.sprite(700, 1000, "femme").setScale(2); // add sprite to scene
+        femme.setDisplaySize(140, 780); // Explicitly set width and height (pixels)
+        femme.play("femme-idle"); // start idle animation with the name defined above
+        /* End of Femme's idle animation */
+
+        /* Start of Johnny's walking animation and controls */
+        player = this.physics.add.sprite(100, 1000, "johnny").setScale(2); // add sprite to scene
+        player.setDisplaySize(140, 780); // Explicitly set width and height (pixels)
+        this.anims.create({
+          key: "left",
+          frames: this.anims.generateFrameNumbers("johnny", {
+            start: 0,
+            end: 7,
+          }),
+          frameRate: 10,
+          repeat: -1,
+        });
+
+        this.anims.create({
+          key: "turn",
+          frames: [{ key: "johnny", frame: 8 }], // single frame for turning. The last frame of the walking animation. Check the sprite sheet.
+          frameRate: 20,
+        });
+
+        this.anims.create({
+          key: "right",
+          frames: this.anims.generateFrameNumbers("johnny", {
+            start: 0, // Same frames as left animation but played in reverse in the update function below.
+            end: 7,
+          }),
+          frameRate: 10,
+          repeat: -1,
+        });
+        /* End of Johnny's walking animation */
+
+        /* Start of keyboard controls */
+        cursors = this.input.keyboard.createCursorKeys();
+        /* End of keyboard controls */
+      }
+
+      function update() {
+        const pointer = this.input.activePointer; // Get the active pointer (mouse or touch)
+
+        if (
+          cursors.left.isDown ||
+          (pointer.isDown && pointer.y > this.sys.game.config.height / 2)
+        ) {
+          /*
+            (pointer.isDown && pointer.y > this.sys.game.config.height / 2) -> If the pointer is pressed and is in the bottom half of the screen, move left because the screen is rotated 90 degrees to landscape mode.
+            */
+          player.setVelocityX(-160); // Move left at speed 160
+          player.anims.play("left", true); // Play the left animation
+          player.flipX = true; // resets the flip
+        } else if (
+          cursors.right.isDown ||
+          (pointer.isDown && pointer.y <= this.sys.game.config.height / 2)
+        ) {
+          player.setVelocityX(160); // Move right at speed 160
+          player.anims.play("right", true); // Play the right animation
+          player.flipX = false; // flips the sprite horizontally
+        } else {
+          player.setVelocityX(0); // Stop moving
+          player.anims.play("turn"); // Play the turn animation (idle) defined above.
+        }
+        if (cursors.up.isDown && player.body.touching.down) {
+          player.setVelocityY(-330); // Jump up at speed 330
+        }
+      }
+    </script>
+  </body>
+</html>
