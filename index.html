@@ -98,6 +98,7 @@
         /* Start of Johnny's walking animation and controls */
         player = this.physics.add.sprite(100, 1000, "johnny").setScale(2); // add sprite to scene
         player.setDisplaySize(140, 780); // Explicitly set width and height (pixels)
+        player.setCollideWorldBounds(true); // Prevents the player from going out of bounds
         this.anims.create({
           key: "left",
           frames: this.anims.generateFrameNumbers("johnny", {
