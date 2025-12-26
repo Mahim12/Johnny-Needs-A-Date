@@ -119,7 +119,7 @@ export const SceneThree = new Phaser.Class({
       }
 
       activeInput = createHtmlInput(this, 725, 500, {
-        placeholder: "Say something to Femme...",
+        placeholder: "Flirt with Femme...",
       });
 
       activeInput.addEventListener("keydown", async (e) => {
@@ -136,7 +136,7 @@ export const SceneThree = new Phaser.Class({
           // Create a speech bubble at (Johnny's position) with width 300 and height 100
           activeInput.value = "";
           // <-- Clear after rendering
-          activeInput.placeholder = "Say something to Femme...";
+          activeInput.placeholder = "Flirt with Femme...";
           // Optional: reset placeholder
 
           try {
