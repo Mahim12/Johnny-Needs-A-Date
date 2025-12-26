@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Phaser Recording Demo</title>
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #222;
+      overflow: hidden;
+    }
+    #controls {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 9999;
+    }
+    button {
+      padding: 6px 14px;
+      margin-right: 8px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div id="controls">
+  <button id="start">Start Recording</button>
+  <button id="stop">Stop Recording</button>
+</div>
+
+<script>
+  /// ----------------------
+  /// PHASER GAME CONFIG
+  /// ----------------------
+  const config = {
+    type: Phaser.AUTO,
+    width: 800,
+    height: 600,
+    backgroundColor: "#222",
+    physics: {
+      default: "arcade",
+      arcade: { gravity: { y: 0 }, debug: false }
+    },
+    scene: {
+      preload,
+      create
+    }
+  };
+
+  let game = new Phaser.Game(config);
+  let ball;
+  let recorder;
+  let recordedChunks = [];
+
+  function preload() {
+    // You can replace the image with a local path if you want
+    this.load.image("ball", "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Soccerball.svg/512px-Soccerball.svg.png");
+  }
+
+  function create() {
+    ball = this.physics.add.image(400, 300, "ball").setScale(0.2);
+    ball.setVelocity(200, 150);
+    ball.setBounce(1, 1);
+    ball.setCollideWorldBounds(true);
+
+    // OPTIONAL: let camera follow the ball
+    // this.cameras.main.startFollow(ball);
+  }
+
+  /// ----------------------
+  /// RECORDING CONTROLS
+  /// ----------------------
+
+  const startBtn = document.getElementById("start");
+  const stopBtn  = document.getElementById("stop");
+
+  startBtn.onclick = () => {
+    recordedChunks = [];
+
+    // Capture the Phaser canvas stream
+    const canvas = game.canvas;
+    const stream = canvas.captureStream(60); // 60 FPS
+
+    recorder = new MediaRecorder(stream, {
+      mimeType: "video/webm; codecs=vp9"
+    });
+
+    recorder.ondataavailable = e => {
+      if (e.data.size > 0) recordedChunks.push(e.data);
+    };
+
+    recorder.onstop = saveVideo;
+
+    recorder.start();
+    console.log("Recording started...");
+  };
+
+  stopBtn.onclick = () => {
+    if (recorder && recorder.state !== "inactive") {
+      recorder.stop();
+      console.log("Recording stopped.");
+    }
+  };
+
+  /// ----------------------
+  /// SAVE VIDEO FILE
+  /// ----------------------
+  function saveVideo() {
+    const blob = new Blob(recordedChunks, { type: "video/webm" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "phaser-recording.webm";
+    a.click();
+
+    URL.revokeObjectURL(url);
+  }
+</script>
+
+</body>
+</html>
