@@ -18,7 +18,8 @@ type ChatRequest struct {
 
 // Outgoing response to the frontend
 type ChatResponse struct {
-	Reply string `json:"reply"`
+	Reply     string `json:"reply"`
+	Sentiment string `json:"sentiment"`
 }
 
 // newChatHandler connects HTTP world → Groq world by calling callGroq().
@@ -79,6 +80,16 @@ func newChatHandler(apiKey string) http.HandlerFunc {
 			return
 		}
 
-		json.NewEncoder(w).Encode(ChatResponse{Reply: reply})
+		// Try to parse reply as JSON with sentiment
+		var aiResp ChatResponse
+		if err := json.Unmarshal([]byte(reply), &aiResp); err != nil {
+			// fallback: if not JSON, treat whole reply as text
+			aiResp.Reply = reply
+			aiResp.Sentiment = "neutral"
+		}
+		fmt.Println("AI reply:", aiResp.Reply, "Sentiment:", aiResp.Sentiment)
+
+		// Send response back to frontend
+		json.NewEncoder(w).Encode(aiResp)
 	}
 }

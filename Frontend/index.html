@@ -1,92 +1,83 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <meta charset="UTF-8"/>
+        <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
+        <script type="module" src="./assets/js/scenes/scene-one.js"></script>
+        <script type="module" src="./assets/js/scenes/scene-two.js"></script>
+        <script type="module" src="./assets/js/helper/loading-scene.js"></script>
+        <style type="text/css">
+            /* Example CSS in your index.html */
+            body {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                width: 100%;
+                font-family: "ComicSansMS", sans-serif;
+            }
 
-<head>
-  <meta charset="UTF-8" />
-  <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
-  <script type="module" src="./assets/js/scenes/scene-one.js"></script>
-  <script type="module" src="./assets/js/scenes/scene-two.js"></script>
-  <script type="module" src="./assets/js/helper/loading-scene.js"></script>
-  <style type="text/css">
-    /* Example CSS in your index.html */
-    body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      width: 100%;
-      font-family: "ComicSansMS", sans-serif;
-    }
+            @font-face {
+                font-family: "ComicSansMS";
+                /* You can choose a different name */
+                src: url("assets/fonts/comic-sans.ttf") format("truetype");
+                font-weight: normal;
+                font-style: normal;
+            }
 
-    @font-face {
-      font-family: "ComicSansMS";
-      /* You can choose a different name */
-      src: url("assets/fonts/comic-sans.ttf") format("truetype");
-      font-weight: normal;
-      font-style: normal;
-    }
-    
-    #chat-input {
-  font-size: 64px;       /* prevents zoom */
-  transform: scale(0.6); /* whatever makes it look right */
-  transform-origin: top left;
-}
-  </style>
-</head>
+            #chat-input {
+                font-size: 64px;
+                /* prevents zoom */
+                transform: scale(0.6);
+                /* whatever makes it look right */
+                transform-origin: top left;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="game"></div>
+        <script type="module">
+            import {LoaderScene} from "./assets/js/helper/loading-scene.js";
+            import {SceneOne} from "./assets/js/scenes/scene-one.js";
+            import {SceneTwo} from "./assets/js/scenes/scene-two.js";
+            import {SceneThree} from "./assets/js/scenes/scene-three.js";
 
-<body>
-  <div id="game"></div>
-  <script type="module">
-    import { LoaderScene } from "./assets/js/helper/loading-scene.js";
-    import { SceneOne } from "./assets/js/scenes/scene-one.js";
-    import { SceneTwo } from "./assets/js/scenes/scene-two.js";
-    import { SceneThree } from "./assets/js/scenes/scene-three.js";
+            const phaserConfig = {
+                type: Phaser.AUTO,
+                parent: "game",
+                width: window.innerWidth,
+                // full width
+                height: window.innerHeight,
+                // full height
+                backgroundColor: "#ffffff",
+                // ✅ Forces Phaser background to white
+                physics: {
+                    default: "arcade",
+                    arcade: {
+                        debug: false,
+                    },
+                },
+                scene: [LoaderScene, SceneOne, SceneTwo, SceneThree],
+            };
 
-    const phaserConfig = {
-      type: Phaser.AUTO,
-      parent: "game",
-      width: window.innerWidth, // full width
-      height: window.innerHeight, // full height
-      backgroundColor: "#ffffff", // ✅ Forces Phaser background to white
-      physics: {
-        default: "arcade",
-        arcade: {
-          debug: false,
-        },
-      },
-      scene: [LoaderScene, SceneOne, SceneTwo, SceneThree],
-    };
+            const game = new Phaser.Game(phaserConfig);
 
-    const game = new Phaser.Game(phaserConfig);
-
-    // Start the game by calling the LoaderScene and passing the data for SceneOne
-    game.scene.start("LoaderScene", {
-      nextScene: "SceneOne",
-      assets: [
-        {
-          type: "image",
-          key: "poster_background",
-          path: "assets/graphics/sceneOne/poster_background.png",
-        },
-        {
-          type: "image",
-          key: "poster",
-          path: "assets/graphics/sceneOne/poster.png",
-        },
-        { type: "image", key: "button", path: "assets/graphics/button.png" },
-      ],
-    });
-
-
-    const res = await fetch("http://localhost:8080/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: userInput }),
-    });
-
-    const data = await res.json();
-    console.log(data.reply);
-
-  </script>
-</body>
-
+            // Start the game by calling the LoaderScene and passing the data for SceneOne
+            game.scene.start("LoaderScene", {
+                nextScene: "SceneOne",
+                assets: [{
+                    type: "image",
+                    key: "poster_background",
+                    path: "assets/graphics/sceneOne/poster_background.png",
+                }, {
+                    type: "image",
+                    key: "poster",
+                    path: "assets/graphics/sceneOne/poster.png",
+                }, {
+                    type: "image",
+                    key: "button",
+                    path: "assets/graphics/button.png"
+                }, ],
+            });
+        </script>
+    </body>
 </html>
