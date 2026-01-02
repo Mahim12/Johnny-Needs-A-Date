@@ -40,6 +40,8 @@
             import {SceneOne} from "./assets/js/scenes/scene-one.js";
             import {SceneTwo} from "./assets/js/scenes/scene-two.js";
             import {SceneThree} from "./assets/js/scenes/scene-three.js";
+            import {SceneIntro} from "./assets/js/scenes/scene-intro.js";
+            import {SceneCompanyLogo} from "./assets/js/scenes/scene-company-logo.js";
 
             const phaserConfig = {
                 type: Phaser.AUTO,
@@ -56,27 +58,19 @@
                         debug: false,
                     },
                 },
-                scene: [LoaderScene, SceneOne, SceneTwo, SceneThree],
+                scene: [LoaderScene, SceneCompanyLogo, SceneIntro, SceneOne, SceneTwo, SceneThree],
             };
 
             const game = new Phaser.Game(phaserConfig);
 
             // Start the game by calling the LoaderScene and passing the data for SceneOne
             game.scene.start("LoaderScene", {
-                nextScene: "SceneOne",
+                nextScene: "SceneCompanyLogo",
                 assets: [{
                     type: "image",
-                    key: "poster_background",
-                    path: "assets/graphics/sceneOne/poster_background.png",
-                }, {
-                    type: "image",
-                    key: "poster",
-                    path: "assets/graphics/sceneOne/poster.png",
-                }, {
-                    type: "image",
-                    key: "button",
-                    path: "assets/graphics/button.png"
-                }, ],
+                    key: "company_logo",
+                    path: "assets/graphics/sceneCompanyLogo/company-logo.png",
+                }],
             });
         </script>
     </body>

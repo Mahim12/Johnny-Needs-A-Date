@@ -73,7 +73,7 @@ export const SceneTwo = new Phaser.Class({
                 }, {
                     type: "image",
                     key: "chat-icon",
-                    path: "assets/graphics/ChatGPT_Image_Oct_16__2025__12_49_36_PM-removebg-preview.png",
+                    path: "assets/graphics/chat-icon.png",
                 }, ],
             }, this);
         }
