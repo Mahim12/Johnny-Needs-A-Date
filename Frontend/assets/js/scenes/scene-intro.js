@@ -24,7 +24,7 @@ export const SceneIntro = new Phaser.Class({
                         { 
                             type: "image", 
                             key: "poster_background", 
-                            path: "assets/graphics/sceneOne/poster_background.png" 
+                            path: "assets/graphics/poster_background.png" 
                         },
                         { 
                             type: "image", 
