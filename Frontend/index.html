@@ -1,77 +1,83 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8"/>
-        <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
-        <script type="module" src="./assets/js/scenes/scene-one.js"></script>
-        <script type="module" src="./assets/js/scenes/scene-two.js"></script>
-        <script type="module" src="./assets/js/helper/loading-scene.js"></script>
-        <style type="text/css">
-            /* Example CSS in your index.html */
-            body {
-                margin: 0;
-                padding: 0;
-                overflow: hidden;
-                width: 100%;
-                font-family: "ComicSansMS", sans-serif;
-            }
 
-            @font-face {
-                font-family: "ComicSansMS";
-                /* You can choose a different name */
-                src: url("assets/fonts/comic-sans.ttf") format("truetype");
-                font-weight: normal;
-                font-style: normal;
-            }
+<head>
+    <meta charset="UTF-8" />
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
+    <script type="module" src="./assets/js/scenes/scene-one.js"></script>
+    <script type="module" src="./assets/js/scenes/scene-two.js"></script>
+    <script type="module" src="./assets/js/helper/loading-scene.js"></script>
+    <style type="text/css">
+        /* Example CSS in your index.html */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            width: 100%;
+            font-family: "ComicSansMS", sans-serif;
+        }
 
-            #chat-input {
-                font-size: 64px;
-                /* prevents zoom */
-                transform: scale(0.6);
-                /* whatever makes it look right */
-                transform-origin: top left;
-            }
-        </style>
-    </head>
-    <body>
-        <div id="game"></div>
-        <script type="module">
-            import {LoaderScene} from "./assets/js/helper/loading-scene.js";
-            import {SceneOne} from "./assets/js/scenes/scene-one.js";
-            import {SceneTwo} from "./assets/js/scenes/scene-two.js";
-            import {SceneThree} from "./assets/js/scenes/scene-three.js";
-            import {SceneIntro} from "./assets/js/scenes/scene-intro.js";
-            import {SceneCompanyLogo} from "./assets/js/scenes/scene-company-logo.js";
+        @font-face {
+            font-family: "ComicSansMS";
+            /* You can choose a different name */
+            src: url("assets/fonts/comic-sans.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
 
-            const phaserConfig = {
-                type: Phaser.AUTO,
-                parent: "game",
-                width: window.innerWidth,
-                // full width
-                height: window.innerHeight,
-                // full height
-                backgroundColor: "#ffffff",
-                // ✅ Forces Phaser background to white
-                physics: {
-                    default: "arcade",
-                    arcade: {
-                        debug: false,
-                    },
+        #chat-input {
+            font-size: 64px;
+            /* prevents zoom */
+            transform: scale(0.6);
+            /* whatever makes it look right */
+            transform-origin: top left;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="game"></div>
+    <script type="module">
+        import { LoaderScene } from "./assets/js/helper/loading-scene.js";
+        import { SceneOne } from "./assets/js/scenes/scene-one.js";
+        import { SceneTwo } from "./assets/js/scenes/scene-two.js";
+        import { SceneThree } from "./assets/js/scenes/scene-three.js";
+        import { SceneIntro } from "./assets/js/scenes/scene-intro.js";
+        import { SceneCompanyLogo } from "./assets/js/scenes/scene-company-logo.js";
+        import { SceneDisclaimer } from "./assets/js/scenes/scene-disclaimer.js";
+
+        const phaserConfig = {
+            type: Phaser.AUTO,
+            parent: "game",
+            width: window.innerWidth,
+            // full width
+            height: window.innerHeight,
+            // full height
+            backgroundColor: "#ffffff",
+            // ✅ Forces Phaser background to white
+            physics: {
+                default: "arcade",
+                arcade: {
+                    debug: false,
                 },
-                scene: [LoaderScene, SceneCompanyLogo, SceneIntro, SceneOne, SceneTwo, SceneThree],
-            };
+            },
+            scene: [LoaderScene, SceneCompanyLogo, SceneDisclaimer, SceneIntro, SceneOne, SceneTwo, SceneThree],
+        };
 
-            const game = new Phaser.Game(phaserConfig);
+        const game = new Phaser.Game(phaserConfig);
 
-            // Start the game by calling the LoaderScene and passing the data for SceneOne
-            game.scene.start("LoaderScene", {
-                nextScene: "SceneCompanyLogo",
-                assets: [{
+        // Start the game by calling the LoaderScene and passing the data for SceneOne
+        game.scene.start("LoaderScene", {
+            nextScene: "SceneDisclaimer",
+            assets: [
+                {
                     type: "image",
-                    key: "company_logo",
-                    path: "assets/graphics/sceneCompanyLogo/company-logo.png",
-                }],
-            });
-        </script>
-    </body>
+                    key: "poster_background",
+                    path: "assets/graphics/sceneOne/poster_background.png"
+                }
+            ],
+        });
+    </script>
+</body>
+
 </html>

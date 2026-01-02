@@ -11,12 +11,10 @@ export const SceneCompanyLogo = new Phaser.Class({
         /* Start of loading the background and covering it fully */
         // main camera of the scene
         const cam = this.cameras.main;
+        
         /* Start of loading the company-title and placing it */
-
         this.add.image(cam.centerX, cam.centerY, "company_logo");
-        // Add image at x=this.cameras.main.centerX, y=this.cameras.main.centerY - 100
-        // logo.setDisplaySize(1000, 1800);
-        /* End of loading the company-title and placing it at the upper center */
+        /* End of loading the company-title */
 
         this.time.delayedCall(2000, () => { // 2s delay before starting fade out
             this.cameras.main.fadeOut(1000, 0, 0, 0); // 1s fade out, black

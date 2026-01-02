@@ -17,15 +17,18 @@ export class LoaderScene extends Phaser.Scene {
     }
 
     preload() {
-        // Create the visual elements, including the text
         this.createProgressBar();
         this.loadAssets();
-
-        // Listen for the 'complete' event to start the next scene
-        this.load.on("complete", () => {
+    
+        if (this.assetsToLoad.length === 0) {
+            // No assets to load, start next scene immediately
             this.scene.start(this.nextSceneKey);
+        } else {
+            // Listen for the 'complete' event to start the next scene
+            this.load.on("complete", () => {
+                this.scene.start(this.nextSceneKey);
+            });
         }
-        );
     }
 
     createProgressBar() {

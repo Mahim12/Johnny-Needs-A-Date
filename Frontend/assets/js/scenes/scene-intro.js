@@ -21,9 +21,21 @@ export const SceneIntro = new Phaser.Class({
                 this.scene.start("LoaderScene", {
                     nextScene: "SceneOne",
                     assets: [
-                        { type: "image", key: "poster_background", path: "assets/graphics/sceneOne/poster_background.png" },
-                        { type: "image", key: "poster", path: "assets/graphics/sceneOne/poster.png" },
-                        { type: "image", key: "button", path: "assets/graphics/button.png" }
+                        { 
+                            type: "image", 
+                            key: "poster_background", 
+                            path: "assets/graphics/sceneOne/poster_background.png" 
+                        },
+                        { 
+                            type: "image", 
+                            key: "poster", 
+                            path: "assets/graphics/sceneOne/poster.png" 
+                        },
+                        { 
+                            type: "image", 
+                            key: "button", 
+                            path: "assets/graphics/button.png" 
+                        }
                     ],
                 }, this);
             });
