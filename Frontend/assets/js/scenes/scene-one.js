@@ -9,8 +9,9 @@ export const SceneOne = new Phaser.Class({
 
     create: function() {
         /* Start of loading the background and covering it fully */
-        const cam = this.cameras.main;
         // main camera of the scene
+        const cam = this.cameras.main;
+        
         const bg = this.add.image(cam.centerX, cam.centerY, "poster_background");
         // add background image
         // Calculate scale factors for width and height
@@ -26,14 +27,14 @@ export const SceneOne = new Phaser.Class({
         /* End of loading the background and covering it fully */
 
         /* Start of loading the poster and placing it at the upper center */
-        const poster = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY - 100, "poster");
+        const poster = this.add.image(cam.centerX, cam.centerY - 100, "poster");
         // Add image at x=this.cameras.main.centerX, y=this.cameras.main.centerY - 100
         poster.setDisplaySize(800, 800);
         // Explicitly set width and height (pixels)
         /* End of loading the poster and placing it at the upper center */
 
         /* Start of loading the button and placing it at the center bottom */
-        const button = this.add.image(this.cameras.main.centerX + 20, this.cameras.main.centerY + 420, "button");
+        const button = this.add.image(cam.centerX + 20, cam.centerY + 420, "button");
         // Add button image at camera center
         button.setDisplaySize(800, 250);
         // Explicitly set width and height (pixels)
@@ -60,7 +61,7 @@ export const SceneOne = new Phaser.Class({
             }, this);
         }
         );
-        this.add.text(this.cameras.main.width / 2 + 20, this.cameras.main.height / 2 + 420, "PLAY", {
+        this.add.text(cam.width / 2 + 20, cam.height / 2 + 420, "PLAY", {
             fontSize: "88px",
             color: "#ffffff",
             fontFamily: "ComicSansMS",
@@ -68,6 +69,4 @@ export const SceneOne = new Phaser.Class({
         }).setOrigin(0.5);
         /* End of loading the button and placing it at the center bottom */
     },
-
-    update: function() {},
 });

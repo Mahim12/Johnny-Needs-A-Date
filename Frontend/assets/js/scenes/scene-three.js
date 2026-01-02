@@ -118,7 +118,7 @@ export const SceneThree = new Phaser.Class({
         // Prevent multiple input fields
       }
 
-      activeInput = createHtmlInput(this, 725, 500, {
+      activeInput = createHtmlInput(this, 725, 370, {
         placeholder: "Flirt with Femme...",
       });
 
